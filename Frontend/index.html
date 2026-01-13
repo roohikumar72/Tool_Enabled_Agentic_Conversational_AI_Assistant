@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agentic Conversational AI – Demo</title>
+  <style>
+    body { font-family: Arial; }
+    .chat { max-width: 600px; margin: auto; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
+</head>
+<body>
+<div class="chat">
+  <h2>Agentic Conversational AI Demo</h2>
+  <p>
+  <b>Try:</b>
+  “Find software engineering internships”,
+  “Cheapest laptop under 50000”,
+  “What tools can you use?”
+</p>
+
+
+  <div id="messages"></div>
+
+  <input id="msg" placeholder="Type a message..." />
+  <button onclick="send()">Send</button>
+</div>
+
+<script>
+async function send() {
+  const msg = document.getElementById("msg").value;
+
+  const res = await fetch("/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: msg})
+  });
+
+  const data = await res.json();
+
+  document.getElementById("messages").innerHTML +=
+  `<p class="user"><b>User:</b> ${msg}</p>
+   <p class="bot"><b>Agent Response:</b><br>${data.reply}</p>`;
+
+  document.getElementById("msg").value = "";
+
+  document.getElementById("messages").scrollTop =
+    document.getElementById("messages").scrollHeight;
+}
+</script>
+</body>
+</html>
